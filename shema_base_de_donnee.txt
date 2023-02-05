@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS public.departement
+(
+    id_dept integer PRIMARY KEY,
+    nom_dept character varying(50) NOT NULL UNIQUE
+) ;
+
+
+CREATE TABLE IF NOT EXISTS public.utilisateur
+(
+    id integer NOT NULL,
+	nom character varying(50) NOT NULL,
+	prenom character varying(50) NOT NULL,
+    login character varying(50) NOT NULL UNIQUE,
+    mdp character varying(50) NOT NULL UNIQUE,
+    id_dept integer,
+	CONSTRAINT long_mdp CHECK (char_length(mdp) >= 8),
+    CONSTRAINT unique_constraint PRIMARY KEY (id) ,
+	CONSTRAINT id_dept_pk FOREIGN KEY (id_dept) REFERENCES departement(id_dept)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.utilisateur
+    OWNER to postgres;
+
+ALTER TABLE public.departement
+    OWNER to postgres;
