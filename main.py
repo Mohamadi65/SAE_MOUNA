@@ -22,7 +22,7 @@ def Not_Null(fichier,nom_colonne):
                         f.write("'")
                         f.write(" à la ligne ")
                         f.write(str(i + 2))
-                        f.write(" est vide\n")
+                        f.write(" est vide alors qu'il ne doit pas l'être \n")
 
 
 
@@ -50,13 +50,19 @@ def Unique(fichier,nom_colonne):
                 f.write("'")
                 f.write(nom_colonne)
                 f.write("'")
-                f.write(" n'est pas unique\n")
+                f.write(" n'est pas unique , ce qui contrarie la contrainte d'unicité de la colonne\n")
 
 
 
+def primary_key(fichier,nomcolonne):
+    with open("fichier_log.txt", "a", encoding='utf-8') as f:
+        f.write("Vérification de la contrainte de la clé primaire  : ")
 
+    Unique(fichier,nomcolonne)
+    Not_Null(fichier,nomcolonne)
 
 if __name__ == '__main__':
     fichier = pd.read_csv("C:/code/python/Mouna/Données-Etudiants.csv", header=0, sep=";")
     Not_Null(fichier,'id_dept')
     Unique(fichier,'nom')
+    primary_key(fichier,'id')
