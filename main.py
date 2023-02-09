@@ -27,6 +27,7 @@ def Not_Null(fichier,nom_colonne):
 
 
 def Unique(fichier,nom_colonne):
+    
     # déclaration d'une liste pour enrégistrer les données uniques
     liste=[]  # au début la liste est vide
     for i in range(len(fichier)):
@@ -56,13 +57,38 @@ def Unique(fichier,nom_colonne):
 
 def primary_key(fichier,nomcolonne):
     with open("fichier_log.txt", "a", encoding='utf-8') as f:
-        f.write("Vérification de la contrainte de la clé primaire  : ")
+        f.write("\n\n")
+        unicite =Unique(fichier,nomcolonne)
+        if unicite:
+            f.write("cool")
+        vide=Not_Null(fichier,nomcolonne)
+        f.write("\n\n")
 
-    Unique(fichier,nomcolonne)
-    Not_Null(fichier,nomcolonne)
+def foreign_key(etudiant,departement,col_etu,col_dept):
+    liste_dept=[]
+    #récuperons tous les numéros des département et mettons les dans une liste
+    for i in range(len(departement)) :
+        valeur = departement.loc[i, col_dept]
+        liste_dept.append(str(valeur))
+
+    #Ici notre liste contient la liste des département
+
+    for i in range(len(etudiant)):
+        valeur = fichier.loc[i, col_etu]
+        if valeur not in liste_dept:
+            print("not correspond",valeur)
+
+
+
+
+
 
 if __name__ == '__main__':
     fichier = pd.read_csv("C:/code/python/Mouna/Données-Etudiants.csv", header=0, sep=";")
-    Not_Null(fichier,'id_dept')
+    departement=pd.read_csv("Données-Departements.csv",header=0, sep=";")
+    """Not_Null(fichier,'id_dept')
     Unique(fichier,'nom')
     primary_key(fichier,'id')
+    """
+
+    foreign_key(fichier,departement,'id_dept','num_dept')

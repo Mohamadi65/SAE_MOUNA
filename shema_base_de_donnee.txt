@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS public.utilisateur
 	CONSTRAINT id_dept_pk FOREIGN KEY (id_dept) REFERENCES departement(id_dept)
 )
 
+
+
 TABLESPACE pg_default;
 
 ALTER TABLE public.utilisateur
