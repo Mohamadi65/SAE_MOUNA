@@ -75,15 +75,36 @@ def foreign_key(etudiant,departement,col_etu,col_dept):
 
     for i in range(len(etudiant)):
         valeur = fichier.loc[i, col_etu]
+        print(type(valeur))
         if valeur not in liste_dept:
             print("not correspond",valeur)
+    liste2=[]
+    for i in liste_dept:
+        liste2.append(int(i))
 
+    for i in liste2:
+        print(type(i))
 
-
-
-
+# définition de la fonction type
+def check_type(fichie,colname):
+    for i in range(len(fichier)):
+        valeur = fichier.loc[i, colname]
+        print(type(valeur))
 
 if __name__ == '__main__':
+
+    # définition de la structure de données
+    database_schema=[ {"nom_champ":"id","type":"integer","contrainte":['notnull','unique']},
+               {"nom_champ":"nom","type":"character","taille":50,"contrainte": ['notnull']},
+               {"nom_champ":"prenom","type":"character","taille":50,"contrainte": ['notnull',"unique"]},
+               {"nom_champ": "login", "type": "character", "taille": 50, "contrainte": ['notnull', "unique"]},
+               {"nom_champ": "mdp", "type": "character", "taille": 50, "contrainte": {'notnull':"true", "unique":"true","check":{"min":8}}},
+               {"nom_champ": "id_dept", "type": "integer"}
+               ]
+
+
+
+
     fichier = pd.read_csv("C:/code/python/Mouna/Données-Etudiants.csv", header=0, sep=";")
     departement=pd.read_csv("Données-Departements.csv",header=0, sep=";")
     """Not_Null(fichier,'id_dept')
@@ -91,4 +112,5 @@ if __name__ == '__main__':
     primary_key(fichier,'id')
     """
 
-    foreign_key(fichier,departement,'id_dept','num_dept')
+    check_type(fichier,'nom')
+    #foreign_key(fichier,departement,'id_dept','num_dept')

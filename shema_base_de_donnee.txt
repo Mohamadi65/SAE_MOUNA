@@ -27,3 +27,9 @@ ALTER TABLE public.utilisateur
 
 ALTER TABLE public.departement
     OWNER to postgres;
+
+
+    utilisateurs = [    {        "id": 1,        "nom": "Doe",        "prenom": "John",        "login": "johndoe",        "mdp": "password123",        "id_dept": 10    },    {        "id": 2,        "nom": "Smith",        "prenom": "Jane",        "login": "janesmith",        "mdp": "qwertyuiop",        "id_dept": 20    }]
+    print((database[0]["nom_champ"]))
+    print(database[0]["contrainte"][0])
+     print(database[4]["contrainte"]["check"]["minimum"])
