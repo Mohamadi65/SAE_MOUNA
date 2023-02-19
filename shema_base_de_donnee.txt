@@ -33,3 +33,22 @@ ALTER TABLE public.departement
     print((database[0]["nom_champ"]))
     print(database[0]["contrainte"][0])
      print(database[4]["contrainte"]["check"]["minimum"])
+
+     import pandas as pd
+
+# Charger le fichier dans un DataFrame
+df = pd.read_csv('fic.csv')
+
+# Afficher le DataFrame avant la modification
+print(df)
+
+# Modifier la valeur de la colonne 'Age' à l'indice 0
+df.at[0, 'Age'] = 25
+
+# Enregistrer les modifications dans le fichier
+df.to_csv('fic.csv', index=False)
+
+# Afficher le DataFrame après la modification
+print(df)
+
+if not valeur.is_integer():

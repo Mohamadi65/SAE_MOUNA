@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+
 def Not_Null(fichier,nom_colonne):
 
 
@@ -78,22 +79,135 @@ def foreign_key(etudiant,departement,col_etu,col_dept):
         print(type(valeur))
         if valeur not in liste_dept:
             print("not correspond",valeur)
-    liste2=[]
-    for i in liste_dept:
-        liste2.append(int(i))
+            with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                f.write("colonne ")
+                f.write("' ")
+                f.write(col_etu)
+                f.write("' ")
+                f.write("la valeur  : ")
+                f.write(str(valeur))
+                f.write(" ligne :")
+                f.write(str(i + 2))
+                f.write("'")
+                f.write(" n'est pas une clé étrangère \n")
 
-    for i in liste2:
-        print(type(i))
 
-# définition de la fonction type
-def check_type(fichie,colname):
-    for i in range(len(fichier)):
-        valeur = fichier.loc[i, colname]
-        print(type(valeur))
+
+
+def check_type(fichier,champ):
+
+
+    if str(champ)=='id' or str(champ)=="id_dept":
+        for i in range(len(fichier)):
+
+                valeur = fichier.loc[i, champ]
+                try:
+                    valeur=float(valeur)
+                    if not valeur.is_integer():
+
+
+                        with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                            f.write("colonne ")
+                            f.write("' ")
+                            f.write(champ)
+                            f.write("' ")
+                            f.write("la valeur  : ")
+                            f.write(str(valeur))
+                            f.write(" ligne :")
+                            f.write(str(i + 2))
+
+                            f.write("'")
+                            f.write(" n'est pas un entier \n")
+
+                except:
+                    with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                        f.write("colonne ")
+                        f.write("' ")
+                        f.write(champ)
+                        f.write("' ")
+                        f.write("la valeur  : ")
+                        f.write(str(valeur))
+                        f.write(" ligne :")
+                        f.write(str(i + 2))
+
+                        f.write("'")
+                        f.write(" n'est pas un entier \n")
+
+
+
+
+
+
+
+            # je vérifie que la valeur n'est pas un entier
+    else:
+        if  str(champ)=="nom" or str(champ)=="prenom":
+            for i in range(len(fichier)):
+
+                valeur = fichier.loc[i, champ]
+                try:
+                    valeur = float(valeur)
+                    if isinstance(valeur,float) or isinstance(valeur,int):
+                        with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                            f.write("colonne ")
+                            f.write("' ")
+                            f.write(champ)
+                            f.write("' ")
+                            f.write("la valeur  : ")
+                            f.write(str(valeur))
+                            f.write(" ligne :")
+                            f.write(str(i + 2))
+
+                            f.write("'")
+                            f.write(" n'est pas une chaîne de caractère \n")
+
+
+                except:
+                    print("")
+
+
+
+def check_taille(fichier,champ):
+    if str(champ) == "nom" or str(champ) == "prenom" or str(champ) == "mdp" or str(champ) == "login" :
+        for i in range(len(fichier)):
+            valeur = fichier.loc[i, champ]
+            if len(valeur)>50:
+                with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                    f.write("colonne ")
+                    f.write("' ")
+                    f.write(champ)
+                    f.write("' ")
+                    f.write("la valeur  : ")
+                    f.write(str(valeur))
+                    f.write(" ligne :")
+                    f.write(str(i + 2))
+
+                    f.write("'")
+                    f.write(" à une taille supèrieur à 50 \n")
+
+def check_check(fichier,champ):
+    if str(champ) == "mdp" :
+        for i in range(len(fichier)):
+            valeur = fichier.loc[i, champ]
+            if len(valeur)<8:
+                with open("fichier_log.txt", "a", encoding='utf-8') as f:
+                    f.write("colonne ")
+                    f.write("' ")
+                    f.write(champ)
+                    f.write("' ")
+                    f.write("la valeur  : ")
+                    f.write(str(valeur))
+                    f.write(" ligne :")
+                    f.write(str(i + 2))
+
+                    f.write("'")
+                    f.write(" doit avoir une taille >=8 \n")
+
 
 if __name__ == '__main__':
 
     # définition de la structure de données
+
     database_schema=[ {"nom_champ":"id","type":"integer","contrainte":['notnull','unique']},
                {"nom_champ":"nom","type":"character","taille":50,"contrainte": ['notnull']},
                {"nom_champ":"prenom","type":"character","taille":50,"contrainte": ['notnull',"unique"]},
@@ -104,13 +218,18 @@ if __name__ == '__main__':
 
 
 
-
-    fichier = pd.read_csv("C:/code/python/Mouna/Données-Etudiants.csv", header=0, sep=";")
+    fichier = pd.read_csv("Données-Etudiants.csv", header=0, sep=";",decimal=".")
     departement=pd.read_csv("Données-Departements.csv",header=0, sep=";")
     """Not_Null(fichier,'id_dept')
     Unique(fichier,'nom')
     primary_key(fichier,'id')
     """
+    #check_type(fichier,'id')
+    #check_type(fichier,'nom')
+    foreign_key(fichier,departement,'id_dept','num_dept')
+    #import mon_programme as p
+    #print(p.test())
+    #check_type(fichier,'login')
+    #check_type(fichier,'id')
+    check_check(fichier,'mdp')
 
-    check_type(fichier,'nom')
-    #foreign_key(fichier,departement,'id_dept','num_dept')
